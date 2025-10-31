@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <title>Unity Web Player | leylekOyunu</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body style="text-align: center; padding: 0; border: 0; margin: 0;">
+  <!-- Unity Canvas -->
+  <canvas id="unity-canvas" width="1366" height="768" tabindex="-1"
+    style="width: 1366px; height: 768px; background: #231F20; display:block; margin:0 auto;"></canvas>
+
+  <!-- Blocking overlay (başlangıçta gizli). Bu overlay tıklamaları engeller -->
+  <div id="blockOverlay" style="display:none; position:fixed; inset:0; z-index:99999; background:rgba(0,0,0,0.45); align-items:center; justify-content:center;">
+    <div style="background:rgba(255,255,255,0.98); padding:14px 20px; border-radius:8px; box-shadow:0 6px 18px rgba(0,0,0,0.25); text-align:center; pointer-events:none; max-width:320px;">
+      <div id="blockMsg" style="font-weight:600; margin-bottom:6px;">Skor gönderiliyor...</div>
+      <div class="small text-muted">Lütfen bekleyin</div>
+    </div>
+  </div>
+
+  <!-- Unity loader (statik dosyalarınızın yoluna göre url_for kullanılıyor) -->
+  <script src="{{ url_for('static', filename='game/Build/game.loader.js') }}"></script>
+
+  <script>
+    // Unity instance oluşturma
+    window.addEventListener('load', function () {
+      if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+        var meta = document.createElement('meta');
+        meta.name = 'viewport';
+        meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
+        document.getElementsByTagName('head')[0].appendChild(meta);
+
+        var canvas = document.querySelector("#unity-canvas");
+        canvas.style.width = "100%";
+        canvas.style.height = "100%";
+        canvas.style.position = "fixed";
+        document.body.style.textAlign = "left";
+      }
+
+      createUnityInstance(document.querySelector("#unity-canvas"), {
+        arguments: [],
+        dataUrl: "{{ url_for('static', filename='game/Build/game.data') }}",
+        frameworkUrl: "{{ url_for('static', filename='game/Build/game.framework.js') }}",
+        codeUrl: "{{ url_for('static', filename='game/Build/game.wasm') }}",
+        streamingAssetsUrl: "{{ url_for('static', filename='game/StreamingAssets') }}",
+        companyName: "Elbaş Software Development",
+        productName: "leylekOyunu",
+        productVersion: "1.0",
+      }).then((unityInstance) => {
+        console.log('Unity loaded.');
+      }).catch((err) => {
+        console.error('Unity load error:', err);
+      });
+    });
+
+    // Overlay kontrol fonksiyonları
+    function showBlockingOverlay(msg) {
+      const o = document.getElementById('blockOverlay');
+      if (!o) return;
+      if (msg) document.getElementById('blockMsg').textContent = msg;
+      o.style.display = 'flex';
+      o.style.pointerEvents = 'auto'; // overlay tüm etkileşimleri engeller
+    }
+    function hideBlockingOverlay() {
+      const o = document.getElementById('blockOverlay');
+      if (!o) return;
+      o.style.display = 'none';
+      o.style.pointerEvents = 'none';
+    }
+
+    // Unity'den çağrılacak: SendScoreToJS( JSON_string );
+    // Örnek JSON: {"gamePoint":2}
+    function SendScoreToJS(jsonString) {
+      console.log('SendScoreToJS called with:', jsonString);
+      let payload;
+      try {
+        payload = JSON.parse(jsonString);
+      } catch (e) {
+        console.error('SendScoreToJS: invalid json', e);
+        return;
+      }
+
+      // Skor gönderilirken tıklamaları engelle
+      showBlockingOverlay('Skor gönderiliyor...');
+
+      fetch('/submit_score', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'same-origin',
+        body: JSON.stringify(payload),
+      })
+      .then(async res => {
+        const text = await res.text();
+        let data;
+        try { data = JSON.parse(text); } catch { data = text; }
+        console.log('/submit_score response status:', res.status, 'body:', data);
+        return { ok: res.ok, status: res.status, data };
+      })
+      .then(obj => {
+        if (obj.ok && obj.data && obj.data.success) {
+          // 2.5s bekle ve sonra profile'a yönlendir
+          setTimeout(() => {
+            window.location.href = '/profile';
+          }, 2500);
+        } else {
+          // hata varsa overlay kaldır ve mesaj göster
+          hideBlockingOverlay();
+          alert(obj.data && obj.data.message ? obj.data.message : 'Skor gönderilirken hata oluştu.');
+        }
+      })
+      .catch(err => {
+        console.error('POST error:', err);
+        hideBlockingOverlay();
+        alert('Skor gönderilirken ağ hatası oluştu.');
+      });
+    }
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+    <title>Homepage</title>
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm mb-4 border-bottom">
+        <div class="container-fluid">
+
+            <a class="navbar-brand text-primary fw-bold" href="/">Flappy Leylek</a>
+
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav ms-4 me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" href="/scores">The Best Scores</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" href="/aboutMe">About Me</a>
+                    </li>
+                </ul>
+            </div>
+
+            
+
+            <div class="d-flex align-items-center">
+
+                <form class="d-flex me-3" action="/logout" method="post">
+                    <input type="hidden" name="logout" id="logout" value="true">
+                    <button type="submit" class="btn btn-danger btn-sm">Log out</button>
+                </form>
+
+                <a href="/profile" class="text-decoration-none">
+                    <div class="d-flex align-items-center p-2 rounded-3 border">
+                        <div class="profile-avatar text-center">
+                            <i class="bi bi-person-circle fs-3 text-secondary"></i>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container my-5">
+
+        <h1 class="display-5 fw-bold text-center mb-5 text-primary">Welcome to Flappy Leylek World!</h1>
+
+        <div class="row justify-content-center align-items-center g-4">
+
+            <div class="col-md-7">
+                <div class="card shadow-lg border-0 h-100 p-4">
+                    <div class="card-body">
+                        <h2 class="card-title text-success mb-3">What is Flappy Leylek?</h2>
+
+                        <p class="mb-4">
+                            Flappy Leylek is a game with simple, yet incredibly enjoyable gameplay. Players try to
+                            survive for as
+                            long as possible by avoiding obstacles that appear on the screen. The main goal of the game
+                            is to achieve the highest score.
+                        </p>
+
+                        <h2 class="text-success mt-4 mb-3">How to Play?</h2>
+
+                        <p class="mb-4">
+                            Playing Flappy Leylek is quite simple. Players make the stork jump by pressing the
+                            <span class="badge bg-secondary fs-6 p-2">W</span> key. Due to the effect of gravity,
+                            the stork continuously moves downwards, so players must jump at the correct moment.
+                            Finding the right timing is crucial to
+                            avoid the obstacles that appear on the screen. Players earn points for successfully passing
+                            each obstacle, and the difficulty of the game increases over time.
+                        </p>
+
+                        <a href="/game" class="btn btn-primary btn-lg mt-3">Lets start to play!</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-5">
+                <div class="card shadow-lg border-0 overflow-hidden">
+                    <img src="/static/images/cardImageLeylek.png" alt="Flappy Leylek Oyunu Görseli" class="img-fluid rounded-3"
+                        style="object-fit: cover; height: 100%;">
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
