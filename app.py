@@ -8,8 +8,8 @@ import json
 
 app = Flask(__name__)
 app.secret_key = "gizli_anahtar"  # session için gerekli
-mongo_uri = os.getenv("MONGO_URI")  # Render.com’a kaydedeceğin değişken
-client = MongoClient(mongo_uri)   # kendi veritabanı adını yaz
+client = MongoClient("mongodb+srv://selcukelbas_db_user:ucsh8BR1KLEmmLwo@leylekbrowser.ltsqgkw.mongodb.net/")  
+db = client["database"]  # kendi veritabanı adını yaz
 users_collection = db["login"]
 scores_collection = db["scores"]
 
