@@ -16,8 +16,8 @@
   <!-- Blocking overlay (başlangıçta gizli). Bu overlay tıklamaları engeller -->
   <div id="blockOverlay" style="display:none; position:fixed; inset:0; z-index:99999; background:rgba(0,0,0,0.45); align-items:center; justify-content:center;">
     <div style="background:rgba(255,255,255,0.98); padding:14px 20px; border-radius:8px; box-shadow:0 6px 18px rgba(0,0,0,0.25); text-align:center; pointer-events:none; max-width:320px;">
-      <div id="blockMsg" style="font-weight:600; margin-bottom:6px;">Skor gönderiliyor...</div>
-      <div class="small text-muted">Lütfen bekleyin</div>
+      <div id="blockMsg" style="font-weight:600; margin-bottom:6px;">Score is sending...</div>
+      <div class="small text-muted">Please wait</div>
     </div>
   </div>
 
@@ -84,7 +84,7 @@
       }
 
       // Skor gönderilirken tıklamaları engelle
-      showBlockingOverlay('Skor gönderiliyor...');
+      showBlockingOverlay('Score is saving... Please wait.');
 
       fetch('/submit_score', {
         method: 'POST',
@@ -108,13 +108,13 @@
         } else {
           // hata varsa overlay kaldır ve mesaj göster
           hideBlockingOverlay();
-          alert(obj.data && obj.data.message ? obj.data.message : 'Skor gönderilirken hata oluştu.');
+          alert(obj.data && obj.data.message ? obj.data.message : 'An error occurred while sending the score.');
         }
       })
       .catch(err => {
         console.error('POST error:', err);
         hideBlockingOverlay();
-        alert('Skor gönderilirken ağ hatası oluştu.');
+        alert('An error occurred while sending the score.');
       });
     }
   </script>

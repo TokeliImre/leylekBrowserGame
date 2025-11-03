@@ -76,8 +76,8 @@
                     <tbody>
                         {% for score in tenScores %}
                         <tr>
-                            <td class="fw-bold">{{ score[2] }}</td>
-                            <td>{{ score[3] }}</td>
+                            <td class="fw-bold">{{ score.score }}</td>
+                            <td>{{ score.Timestamp | datetimeformat    }}</td>
                         </tr>
                         {% endfor %}
                         {% if not tenScores %}

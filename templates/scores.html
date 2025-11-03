@@ -66,9 +66,10 @@
                     {% for row in topScores %}
                     <tr>
                         <!-- Veri sütunları yeni yapıya göre ayarlandı: row[0], row[1], row[2] -->
-                        <td class="py-3 px-4 fw-bold">{{ row[0] }}</td>
-                        <td class="py-3 px-4 text-primary">{{ row[1] }}</td>
-                        <td class="py-3 px-4 text-muted">{{ row[2] }}</td>
+                        <td class="py-3 px-4 fw-bold">{{ row.username }}</td>
+                        <td class="py-3 px-4 text-primary">{{ row.score }}</td>
+                        <td>{{ row.Timestamp | datetimeformat }}</td>
+                        
                     </tr>
                     {% endfor %}
                     {% if not topScores %}
