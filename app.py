@@ -2,13 +2,15 @@ from datetime import datetime
 from flask import Flask, flash, jsonify, render_template, request, redirect, url_for, session, send_from_directory
 import time
 from pymongo import MongoClient
-import json
+import json 
+import os
 
 
 
 app = Flask(__name__)
 app.secret_key = "gizli_anahtar"  # session için gerekli
-client = MongoClient("mongodb+srv://selcukelbas_db_user:ucsh8BR1KLEmmLwo@leylekbrowser.ltsqgkw.mongodb.net/")  
+
+client = MongoClient(os.getenv("MONGO_URI"))
 db = client["database"]  # kendi veritabanı adını yaz
 users_collection = db["login"]
 scores_collection = db["scores"]
